@@ -52,7 +52,7 @@ void list_add(node_t **list, node_t *node_t)
 node_t *list_tail(node_t **left)
 {
     while ((*left) && (*left)->next)
-        left = &(AAAA);
+        left = &((*left)->next);
     return *left;
 }
 
@@ -61,7 +61,7 @@ int list_length(node_t **left)
     int n = 0;
     while (*left) {
         ++n;
-        left = &(BBBB);
+        left = &((*left)->next);
     }
     return n;
 }
@@ -69,6 +69,11 @@ int list_length(node_t **left)
 node_t *list_construct(node_t *list, int n)
 {
     node_t *node = malloc(sizeof(node_t));
+    if (!node){
+        printf("[%s] failed\n", __func__);
+        return NULL;
+    }
+
     node->next = list;
     node->value = n;
     return node;
@@ -107,16 +112,16 @@ void quick_sort(node_t **list)
 
             while (p) {
                 node_t *n = p;
-                p = CCCC;
+                p = p->next;
                 list_add(n->value > value ? &right : &left, n);
             }
 
             begin[i] = left;
-            end[i] = DDDD;
+            end[i] = list_tail(&left);;
             begin[i + 1] = pivot;
             end[i + 1] = pivot;
             begin[i + 2] = right;
-            end[i + 2] = EEEE;
+            end[i + 2] = list_tail(&right);;
 
             left = right = NULL;
             i += 2;
@@ -137,12 +142,20 @@ int main(int argc, char **argv)
 
     int *test_arr = malloc(sizeof(int) * count);
 
+    if (!test_arr) {
+        printf("malloc failed\n");
+        return 0;
+    }
+
     for (int i = 0; i < count; ++i)
         test_arr[i] = i;
     shuffle(test_arr, count);
 
-    while (count--)
+    while (count--) {
         list = list_construct(list, test_arr[count]);
+        if (!list)
+            return 0;
+    }
 
     quick_sort(&list);
     assert(list_is_ordered(list));
@@ -151,5 +164,7 @@ int main(int argc, char **argv)
 
     free(test_arr);
 
-    return;
+    printf("quick sort pass\n");
+
+    return 0;
 }
