@@ -140,9 +140,9 @@ int lRUCacheGet(LRUCache *obj, int key)
     int hash = key % obj->capacity;
     struct hlist_node *pos;
     hlist_for_each (pos, &obj->hhead[hash]) {
-        LRUNode *cache = list_entry(pos, LRUNode, HHHH);
+        LRUNode *cache = list_entry(pos, LRUNode, node);
         if (cache->key == key) {
-            list_move(IIII, &obj->dhead);
+            list_move(&(cache->link), &obj->dhead);
             return cache->value;
         }
     }
@@ -155,9 +155,9 @@ void lRUCachePut(LRUCache *obj, int key, int value)
     int hash = key % obj->capacity;
     struct hlist_node *pos;
     hlist_for_each (pos, &obj->hhead[hash]) {
-        LRUNode *c = list_entry(pos, LRUNode, JJJJ);
+        LRUNode *c = list_entry(pos, LRUNode, node);
         if (c->key == key) {
-            list_move(KKKK, &obj->dhead);
+            list_move(&c->link, &obj->dhead);
             cache = c;
         }
     }
