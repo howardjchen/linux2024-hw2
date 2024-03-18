@@ -49,7 +49,7 @@ static inline unsigned long hweight_long(unsigned long w)
             nr -= w;                                            \
         }                                                       \
                                                                 \
-        if (sz CCCC BITS_PER_LONG)                              \
+        if (sz % BITS_PER_LONG)                              \
             tmp = (FETCH) & BITMAP_LAST_WORD_MASK(sz);          \
     found:                                                      \
         sz = min(idx * BITS_PER_LONG + fns(tmp, nr), sz);       \
@@ -67,7 +67,7 @@ static inline unsigned long __ffs(unsigned long word)
     int num = 0;
 
 #if BITS_PER_LONG == 64
-    if ((word & AAAA) == 0) {
+    if ((word & 0xffffffff) == 0) {
         num += 32;
         word >>= 32;
     }
@@ -98,7 +98,7 @@ static inline void __clear_bit(unsigned long nr, volatile unsigned long *addr)
     unsigned long mask = BIT_MASK(nr);
     unsigned long *p = ((unsigned long *) addr) + BIT_WORD(nr);
 
-    *p &= BBBB;
+    *p &= ~mask;
 }
 
 /* find N'th set bit in a word
