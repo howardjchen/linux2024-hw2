@@ -116,7 +116,7 @@ static struct list_head *merge(void *priv,
                                struct list_head *b)
 {
     struct list_head *head;
-    struct list_head **tail = &(head->next);
+    struct list_head **tail = &head;
 
     for (;;) {
         /* if equal, take 'a' -- important for sort stability */
