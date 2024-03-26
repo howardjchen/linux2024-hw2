@@ -38,10 +38,10 @@ int main() {
         if (read(STDIN_FILENO, &c, 1) == 1) {
             switch (c) {
             case CTRL_KEY('q'):
-                printf("Ctrl+Q detected!\n");
+                printf("\rCtrl+Q detected!\n");
                 return 0;
             case CTRL_KEY('p'):
-                printf("Ctrl+P detected!\n");
+                printf("\rCtrl+P detected!\n");
                 break;
             }
         }
